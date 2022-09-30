@@ -13,7 +13,7 @@
   },
   "executionDate": "2019-04-01",
   "uri": "REMITTANCE_INFORMATION",
-  "description": "Payment invoice 75/2017",
+  "description": "",
   "amount": 800,
   "currency": "EUR",
   "isUrgent": false,
@@ -21,7 +21,7 @@
   "feeType": "SHA",
   "feeAccountId": "45685475",
   "taxRelief": {
-    "taxReliefId": "L449",
+    "taxReliefId": "",
     "isCondoUpgrade": false,
     "creditorFiscalCode": "56258745832",
     "beneficiaryType": "NATURAL_PERSON",

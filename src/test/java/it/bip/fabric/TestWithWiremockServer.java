@@ -12,20 +12,27 @@ import it.bip.fabric.utils.TestJsonDocumentLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.Objects;
 
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @ContextConfiguration(initializers = WireMockInitializer.class)
 @SpringBootTest
 @ActiveProfiles("test-wiremock")
+@AutoConfigureMockMvc
 class TestWithWiremockServer {
 
     @Autowired
@@ -33,6 +40,9 @@ class TestWithWiremockServer {
 
     @Autowired
     WireMockStubs wireMockStubs;
+
+    @Autowired
+    MockMvc mockMvc;
 
     @Test
     void testGetBalance(){
@@ -56,5 +66,20 @@ class TestWithWiremockServer {
         ResponseEntity<MoneyTransfer> response = restApiController.createMoneyTransfer("Europe/Rome", "14537780", requestObj);
         Assertions.assertEquals(OK.value(), response.getStatusCode().value());
         Assertions.assertEquals("EXECUTED", Objects.requireNonNull(response.getBody()).getStatus());
+    }
+
+    @Test
+    void testMoneyTransferWrongParams() throws Exception {
+        this.wireMockStubs.generateStubForMoneyTransfer();
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("X-Time-Zone","Europe/Rome");
+        String jsonData = TestJsonDocumentLoader.loadTestJson("../../../__files/wrongCreateMoneyTransferClientRequest.json", TestWithMockito.class);
+        this.mockMvc.perform(post("/api/banking/v1.0/account/14537780/payments/money-transfers")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonData)
+                        .headers(httpHeaders))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.violations[0].fieldName").value("description"));
     }
 }
