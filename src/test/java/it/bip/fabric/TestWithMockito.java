@@ -16,7 +16,6 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
@@ -24,12 +23,10 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
-
 import java.sql.Date;
 import java.util.Objects;
 
@@ -39,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @ActiveProfiles("test-mockito")
-@WebMvcTest(controllers = RestApiController.class)
+@AutoConfigureMockMvc
 class TestWithMockito {
 
     @MockBean
@@ -109,24 +106,6 @@ class TestWithMockito {
         */
     }
 
-    @Test
-    void testCreateMoneytransferWrongParams() throws Exception {
-        String jsonRequestMock = TestJsonDocumentLoader.loadTestJson("../../../__files/wrongCreateMoneyTransferClientRequest.json", TestWithMockito.class);
-        /* MOCK MVC */
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("X-Time-Zone","Europe/Rome");
-        this.mockMvc.perform(post("/api/banking/v1.0/account/14537780/payments/money-transfers")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(jsonRequestMock)
-                        .headers(httpHeaders))
-                .andExpect(status().isBadRequest())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-                //.andExpect(jsonPath("$.violations").value("EXECUTED"));
-
-        /*MoneyTransferRequest requestObjMock = new Gson().fromJson(jsonRequestMock, MoneyTransferRequest.class);
-        ResponseEntity<MoneyTransfer> balance = restApiController.createMoneyTransfer("Europe/Rome", "14537780", requestObjMock);
-        Assertions.assertEquals("EXECUTED", Objects.requireNonNull(balance.getBody()).getStatus());*/
-    }
 
     @Test
     void getTransactions() throws Exception {

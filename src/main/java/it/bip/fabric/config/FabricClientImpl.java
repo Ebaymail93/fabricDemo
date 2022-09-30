@@ -74,7 +74,7 @@ public class FabricClientImpl implements FabricClient {
                 builder.toUriString(), requestEntity.toString(), MoneyTransferClientResponse.class);
         MoneyTransferClientResponse body = response.getBody();
         assert body != null;
-        if (!body.getErrors().isEmpty()) {
+        if (Objects.nonNull(body.getErrors()) && !body.getErrors().isEmpty()) {
             HttpStatus status = response.getStatusCode();
             List<ClientApiErrorDetail> errors = body.getErrors();
             throw new ClientException(status, errors);
