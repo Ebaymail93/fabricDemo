@@ -1,0 +1,47 @@
+{
+  "status": "OK",
+  "error": [],
+  "payload": {
+    "list": [
+      {
+        "transactionId": "1476867193001",
+        "operationId": "19000214902246",
+        "accountingDate": "2019-12-13",
+        "valueDate": "2019-12-13",
+        "type": {
+          "enumeration": "GBS_TRANSACTION_TYPE",
+          "value": "GBS_ACCOUNT_TRANSACTION_TYPE_0034"
+        },
+        "amount": 330.00,
+        "currency": "EUR",
+        "description": "GC LUCA TERRIBILE        DA 03268.22300         DATA ORDINE 13122019 COPERTURA SPESE"
+      },
+      {
+        "transactionId": "1476867199001",
+        "operationId": "19000214902305",
+        "accountingDate": "2019-12-13",
+        "valueDate": "2019-12-13",
+        "type": {
+          "enumeration": "GBS_TRANSACTION_TYPE",
+          "value": "GBS_ACCOUNT_TRANSACTION_TYPE_0034"
+        },
+        "amount": 31.00,
+        "currency": "EUR",
+        "description": "GC LUCA TERRIBILE        DA 03268.22300         DATA ORDINE 13122019 VACANZA GENNAIO"
+      },
+      {
+        "transactionId": "1460159524001",
+        "operationId": "19000191134336",
+        "accountingDate": "2019-11-11",
+        "valueDate": "2019-11-09",
+        "type": {
+          "enumeration": "GBS_TRANSACTION_TYPE",
+          "value": "GBS_ACCOUNT_TRANSACTION_TYPE_0010"
+        },
+        "amount": 854.00,
+        "currency": "EUR",
+        "description": "BD LUCA TERRIBILE        DA 03268.49130         DATA ORDINE 09112019 COPERTURA VISA"
+      }
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+logging:
+  level:
+    root: 'INFO'
+  pattern:
+    console: '%d{dd-MM-yyyy HH:mm:ss} %magenta([%thread]) %highlight(%-5level) %logger.%M - %msg%n'
+external-api:
+  url:
+    baseUrl: 'https://sandbox.platfr.io/api/gbs/banking/v4.0/accounts/'
+    balance: '/balance'
+    transaction: '/transactions'
+    moneyTransfer: '/payments/money-transfers'
+  apiKey: 'FXOVVXXHVCPVPBZXIJOBGUGSKHDNFRRQJP'
+  accountId: '14537780'
+  keyId: '3202'
+  authSchema: 'S2S'

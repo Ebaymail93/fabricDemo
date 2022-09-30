@@ -1,0 +1,3 @@
+external-api:
+  url:
+    baseUrl: 'https://sandbox.platfr.io/api/gbs/banking/v4.0/accounts/'
