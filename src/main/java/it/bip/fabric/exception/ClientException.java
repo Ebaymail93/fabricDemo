@@ -1,6 +1,6 @@
 package it.bip.fabric.exception;
 
-import it.bip.fabric.model.ClientApiErrorDetail;
+import it.bip.fabric.model.dto.ErrorDetail;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -13,5 +13,5 @@ import java.util.List;
 @AllArgsConstructor
 public class ClientException extends RuntimeException {
     private final HttpStatus statusCode;
-    private final transient List<ClientApiErrorDetail> errors;
+    private final transient List<ErrorDetail> errors;
 }

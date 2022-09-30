@@ -1,11 +1,13 @@
 package it.bip.fabric.config;
 
-import it.bip.fabric.exception.ClientException;
+import it.bip.fabric.mapper.TransactionEntityMapper;
 import it.bip.fabric.mapper.ClientModelMapper;
-import it.bip.fabric.model.*;
-import it.bip.fabric.model.clientresponse.AccountBalanceClientResponse;
-import it.bip.fabric.model.clientresponse.AccountTransactionClientResponse;
-import it.bip.fabric.model.clientresponse.MoneyTransferClientResponse;
+import it.bip.fabric.model.dto.*;
+import it.bip.fabric.model.dto.clientresponse.AccountBalanceClientResponse;
+import it.bip.fabric.model.dto.clientresponse.AccountTransactionClientResponse;
+import it.bip.fabric.model.dto.clientresponse.MoneyTransferClientResponse;
+import it.bip.fabric.model.entity.AccountTransactionEntity;
+import it.bip.fabric.service.AccountService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,11 +17,13 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class FabricClientImpl implements FabricClient {
@@ -41,11 +45,14 @@ public class FabricClientImpl implements FabricClient {
 
     private final RestTemplate restTemplate;
 
-    @Autowired
-    public FabricClientImpl(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
+    private final AccountService accountService;
 
+
+    @Autowired
+    public FabricClientImpl(RestTemplate restTemplate, AccountService accountService) {
+        this.restTemplate = restTemplate;
+        this.accountService = accountService;
+    }
 
     @Override
     public AccountBalance getBalance(String timeZone, String accountId) {
@@ -72,18 +79,12 @@ public class FabricClientImpl implements FabricClient {
         HttpEntity<MoneyTransferRequest> requestEntity = new HttpEntity<>(moneyTransferRequest, httpHeaders);
         ResponseEntity<MoneyTransferClientResponse> response = restTemplate.postForEntity(
                 builder.toUriString(), requestEntity.toString(), MoneyTransferClientResponse.class);
-        MoneyTransferClientResponse body = response.getBody();
-        assert body != null;
-        if (Objects.nonNull(body.getErrors()) && !body.getErrors().isEmpty()) {
-            HttpStatus status = response.getStatusCode();
-            List<ClientApiErrorDetail> errors = body.getErrors();
-            throw new ClientException(status, errors);
-        }
         ClientModelMapper<MoneyTransfer> mapper = new ClientModelMapper<>();
         return Objects.requireNonNull(mapper.entityToResource(response.getBody()));
     }
 
     @Override
+    @Transactional
     public AccountTransactionPayload getTransactions(String timeZone, String accountId, Date fromAccountingDate, Date toAccountingDate) {
         String completeUrl = url + accountId + urlTransactions;
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -100,6 +101,10 @@ public class FabricClientImpl implements FabricClient {
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
         ResponseEntity<AccountTransactionClientResponse> response = restTemplate.exchange(
                 builder.toUriString(), HttpMethod.GET, requestEntity, AccountTransactionClientResponse.class);
+        List<AccountTransaction> list = Objects.requireNonNull(response.getBody()).getPayload().getList();
+        List<AccountTransactionEntity> entities = list.stream().map(TransactionEntityMapper::toEntity).collect(Collectors.toList());
+        entities.forEach(k->k.setAccountId(accountId));
+        accountService.saveTransactions(entities);
         ClientModelMapper<AccountTransactionPayload> mapper = new ClientModelMapper<>();
         return Objects.requireNonNull(mapper.entityToResource(response.getBody()));
     }

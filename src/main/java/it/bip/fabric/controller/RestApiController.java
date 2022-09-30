@@ -8,7 +8,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import it.bip.fabric.config.FabricClientImpl;
-import it.bip.fabric.model.*;
+import it.bip.fabric.model.dto.*;
+import it.bip.fabric.model.entity.AccountTransactionEntity;
+import it.bip.fabric.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.sql.Date;
+import java.util.List;
 
 
 @org.springframework.web.bind.annotation.RestController
@@ -40,6 +43,9 @@ public class RestApiController {
 
     @Autowired
     FabricClientImpl fabricClientImpl;
+
+    @Autowired
+    AccountService accountService;
 
     
     @Operation(summary = "Retrieves the balance of a specific cash account")
@@ -84,6 +90,17 @@ public class RestApiController {
                                                                      @Parameter(description = "The accounting date from which transactions should be fetched", required = true) @Valid @RequestParam(value = "fromAccountingDate") Date fromAccountingDate,
                                                                      @Parameter(description = "The accounting date to which transactions should be fetched", required = true) @Valid @RequestParam(value = "toAccountingDate") Date toAccountingDate) {
         AccountTransactionPayload transactions = fabricClientImpl.getTransactions(timeZone, accountId, fromAccountingDate, toAccountingDate);
+        return ResponseEntity.ok().body(transactions);
+    }
+
+    @Operation(summary = "Retrieves the transactions of a specific cash account")
+    @ApiResponse(responseCode = "200", description = "Transazioni recuperate",
+            content = {@Content(mediaType = "application/json",
+                    schema = @Schema(implementation = AccountTransactionPayload.class))})
+    @GetMapping("/account/{accountId}/getAllTransactions")
+    public ResponseEntity<List<AccountTransactionEntity>> getAllTransactionsFromDb(
+                                                                     @Parameter(description = "The ID of the account", required = true) @PathVariable(value = "accountId") String accountId) {
+        List<AccountTransactionEntity> transactions = accountService.getTransactions();
         return ResponseEntity.ok().body(transactions);
     }
 

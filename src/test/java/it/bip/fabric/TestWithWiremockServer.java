@@ -4,16 +4,18 @@ import com.google.gson.Gson;
 import it.bip.fabric.config.WireMockInitializer;
 import it.bip.fabric.config.WireMockStubs;
 import it.bip.fabric.controller.RestApiController;
-import it.bip.fabric.model.AccountBalance;
-import it.bip.fabric.model.AccountTransactionPayload;
-import it.bip.fabric.model.MoneyTransfer;
-import it.bip.fabric.model.MoneyTransferRequest;
+import it.bip.fabric.model.dto.AccountBalance;
+import it.bip.fabric.model.dto.AccountTransactionPayload;
+import it.bip.fabric.model.dto.MoneyTransfer;
+import it.bip.fabric.model.dto.MoneyTransferRequest;
+import it.bip.fabric.repository.AccountTransactionRepository;
 import it.bip.fabric.utils.TestJsonDocumentLoader;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -41,9 +43,16 @@ class TestWithWiremockServer {
     @Autowired
     WireMockStubs wireMockStubs;
 
+    @MockBean
+    private AccountTransactionRepository transactionRepository;
+
     @Autowired
     MockMvc mockMvc;
 
+    /**
+     *  Test recupero saldo con Wiremock
+     *
+     */
     @Test
     void testGetBalance(){
         this.wireMockStubs.generateStubForBalance();
@@ -51,6 +60,10 @@ class TestWithWiremockServer {
         Assertions.assertEquals(new BigDecimal("7.27"), Objects.requireNonNull(balance.getBody()).getAvailableBalance());
     }
 
+    /**
+     *  Test recupero transazioni con Wiremock
+     *
+     */
     @Test
     void testGetTransactions(){
         this.wireMockStubs.generateStubForTransactions();
@@ -58,6 +71,10 @@ class TestWithWiremockServer {
         Assertions.assertEquals(3, Objects.requireNonNull(balance.getBody()).getList().size());
     }
 
+    /**
+     *  Test trasferimento denaro con Wiremock
+     *
+     */
     @Test
     void testMoneyTransfer(){
         this.wireMockStubs.generateStubForMoneyTransfer();
@@ -68,6 +85,11 @@ class TestWithWiremockServer {
         Assertions.assertEquals("EXECUTED", Objects.requireNonNull(response.getBody()).getStatus());
     }
 
+
+    /**
+     *  Test trasferimento denaro con Wiremock; Case body request non valida.
+     *
+     */
     @Test
     void testMoneyTransferWrongParams() throws Exception {
         this.wireMockStubs.generateStubForMoneyTransfer();

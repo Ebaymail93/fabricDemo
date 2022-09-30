@@ -1,4 +1,4 @@
-package it.bip.fabric.model;
+package it.bip.fabric.model.dto;
 
 import lombok.Data;
 

@@ -1,7 +1,6 @@
-package it.bip.fabric.model;
+package it.bip.fabric.model.dto;
 
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,7 +12,7 @@ public class ErrorResponse {
 
     private String timestamp;
 
-    private List<ClientApiErrorDetail> errors;
+    private List<ErrorDetail> errors;
 
     private List<Violation> violations;
 
@@ -22,7 +21,7 @@ public class ErrorResponse {
         this.violations = new ArrayList<>();
     }
 
-    public ErrorResponse(List<ClientApiErrorDetail> errors) {
+    public ErrorResponse(List<ErrorDetail> errors) {
         this.errors = errors;
     }
 

@@ -2,15 +2,11 @@ package it.bip.fabric;
 
 import com.google.gson.Gson;
 import it.bip.fabric.controller.RestApiController;
-import it.bip.fabric.model.AccountBalance;
-import it.bip.fabric.model.AccountTransactionPayload;
-import it.bip.fabric.model.MoneyTransfer;
-import it.bip.fabric.model.MoneyTransferRequest;
-import it.bip.fabric.model.clientresponse.AccountBalanceClientResponse;
-import it.bip.fabric.model.clientresponse.AccountTransactionClientResponse;
-import it.bip.fabric.model.clientresponse.MoneyTransferClientResponse;
+import it.bip.fabric.model.dto.clientresponse.AccountBalanceClientResponse;
+import it.bip.fabric.model.dto.clientresponse.AccountTransactionClientResponse;
+import it.bip.fabric.model.dto.clientresponse.MoneyTransferClientResponse;
+import it.bip.fabric.repository.AccountTransactionRepository;
 import it.bip.fabric.utils.TestJsonDocumentLoader;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -24,13 +20,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.web.client.RestTemplate;
 
-import javax.xml.validation.Validator;
 import java.math.BigDecimal;
-import java.sql.Date;
-import java.util.Objects;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -47,11 +39,18 @@ class TestWithMockito {
     @Autowired
     RestApiController restApiController;
 
+    @MockBean
+    private AccountTransactionRepository transactionRepository;
+
     @Autowired
     MockMvc mockMvc;
 
 
-
+    /**
+     * Test recupero saldo con Mockito
+     *
+     * @throws Exception
+     */
     @Test
     void testGetBalance() throws Exception {
         String jsonObject = TestJsonDocumentLoader.loadTestJson("../../../__files/getBalanceClientResponse.json", TestWithMockito.class);
@@ -78,6 +77,11 @@ class TestWithMockito {
         */
     }
 
+    /**
+     * Test trasferimento denaro con Mockito
+     *
+     * @throws Exception
+     */
     @Test
     void testCreateMoneytransfer() throws Exception {
         String jsonRequestMock = TestJsonDocumentLoader.loadTestJson("../../../__files/createMoneyTransferClientRequest.json", TestWithMockito.class);
@@ -110,6 +114,11 @@ class TestWithMockito {
     }
 
 
+    /**
+     * Test recupero transazioni con Mockito
+     *
+     * @throws Exception
+     */
     @Test
     void getTransactions() throws Exception {
         String jsonData = TestJsonDocumentLoader.loadTestJson("../../../__files/getTransactionsClientResponse.json", TestWithMockito.class);
@@ -138,6 +147,10 @@ class TestWithMockito {
         */
     }
 
+    /**
+     * Test trasferimento denaro con Mockito. Case con request body non valida, campo "description" blank
+     * @throws Exception
+     */
     @Test
     void testCreateMoneytransferWrong() throws Exception {
         String jsonRequestMock = TestJsonDocumentLoader.loadTestJson("../../../__files/wrongCreateMoneyTransferClientRequest.json", TestWithMockito.class);

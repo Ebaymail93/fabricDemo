@@ -13,3 +13,22 @@ external-api:
   accountId: '14537780'
   keyId: '3202'
   authSchema: 'S2S'
+spring:
+  output:
+    ansi:
+      enabled: always
+  datasource:
+    url: 'jdbc:h2:file:${user.home}/Desktop/fabricDB/fabricDB;DATABASE_TO_UPPER=false'
+    username: 'fabric'
+    password: 'demo'
+    driverClassName: 'org.h2.Driver'
+  jpa:
+    spring.jpa.database-platform: 'org.hibernate.dialect.H2Dialect'
+    hibernate:
+      ddlAuto: create
+  h2:
+    console.enabled: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources.add-mappings: false

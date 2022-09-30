@@ -1,4 +1,4 @@
-package it.bip.fabric.model;
+package it.bip.fabric.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;

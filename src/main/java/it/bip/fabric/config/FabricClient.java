@@ -1,9 +1,9 @@
 package it.bip.fabric.config;
 
-import it.bip.fabric.model.AccountBalance;
-import it.bip.fabric.model.AccountTransactionPayload;
-import it.bip.fabric.model.MoneyTransferRequest;
-import it.bip.fabric.model.MoneyTransfer;
+import it.bip.fabric.model.dto.AccountBalance;
+import it.bip.fabric.model.dto.AccountTransactionPayload;
+import it.bip.fabric.model.dto.MoneyTransferRequest;
+import it.bip.fabric.model.dto.MoneyTransfer;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.sql.Date;

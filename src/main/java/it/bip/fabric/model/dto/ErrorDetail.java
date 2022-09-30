@@ -1,11 +1,13 @@
-package it.bip.fabric.model;
+package it.bip.fabric.model.dto;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
 @Data
-public class ClientApiErrorDetail implements Serializable {
+@NoArgsConstructor
+public class ErrorDetail implements Serializable {
     private String code;
     private String description;
     private String params;
@@ -17,5 +19,10 @@ public class ClientApiErrorDetail implements Serializable {
                 ", description='" + description + '\'' +
                 ", params='" + params + '\'' +
                 '}';
+    }
+
+    public ErrorDetail(String code, String description) {
+        this.code = code;
+        this.description = description;
     }
 }

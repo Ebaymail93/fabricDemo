@@ -1,9 +1,8 @@
 package it.bip.fabric.mapper;
 
-import it.bip.fabric.model.clientresponse.ClientResponse;
+import it.bip.fabric.model.dto.clientresponse.ClientResponse;
 
 public class ClientModelMapper<R> {
-
 
     public R entityToResource(ClientResponse<R> entity) {
         if ( entity == null ) {
