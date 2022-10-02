@@ -1,6 +1,6 @@
 package it.bip.fabric.model.dto.clientresponse;
 
-import it.bip.fabric.model.dto.AccountBalance;
+import it.bip.fabric.model.dto.AccountBalanceResponse;
 
-public class AccountBalanceClientResponse extends ClientResponse<AccountBalance> {
+public class AccountBalanceClientResponse extends ClientResponse<AccountBalanceResponse> {
 }

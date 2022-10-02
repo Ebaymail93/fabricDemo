@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class TaxRelief {
-    private String taxReliefID;
+    private String taxReliefId;
     @NotNull(message = "isCondoUpgrade field is required.")
     private Boolean isCondoUpgrade;
     @NotBlank(message = "Creditor fiscal code is required.")

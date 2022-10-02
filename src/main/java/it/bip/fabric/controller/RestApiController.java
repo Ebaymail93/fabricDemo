@@ -51,13 +51,13 @@ public class RestApiController {
     @Operation(summary = "Retrieves the balance of a specific cash account")
     @ApiResponse(responseCode = "200", description = "Transazioni recuperate",
             content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = AccountBalance.class))})
+                    schema = @Schema(implementation = AccountBalanceResponse.class))})
     @GetMapping("/account/{accountId}/getBalance")
-    public ResponseEntity<AccountBalance> getBalance(@Parameter(description = "The time zone that is used to provide the response date fields, using Java TimeZone ID format", in = ParameterIn.HEADER, required = false)
+    public ResponseEntity<AccountBalanceResponse> getBalance(@Parameter(description = "The time zone that is used to provide the response date fields, using Java TimeZone ID format", in = ParameterIn.HEADER, required = false)
                                              @RequestHeader(value = "X-Time-Zone", required = false) String timeZone,
-                                                     @Parameter(description = "The ID of the account", required = true)
+                                                             @Parameter(description = "The ID of the account", required = true)
                                              @PathVariable(value = "accountId") String accountId) {
-        AccountBalance balance = fabricClientImpl.getBalance(timeZone, accountId);
+        AccountBalanceResponse balance = fabricClientImpl.getBalance(timeZone, accountId);
         return ResponseEntity.ok(balance);
     }
 
@@ -65,16 +65,16 @@ public class RestApiController {
     @Operation(summary = "Creates a new money transfer")
     @ApiResponse(responseCode = "200", description = "Operazione eseguita",
             content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = MoneyTransfer.class))})
+                    schema = @Schema(implementation = MoneyTransferResponse.class))})
     @PostMapping(value = "/account/{accountId}/payments/money-transfers", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MoneyTransfer> createMoneyTransfer(@Parameter(description = "The time zone that is used to provide the response date fields, using Java TimeZone ID format", in = ParameterIn.HEADER, required = true)
+    public ResponseEntity<MoneyTransferResponse> createMoneyTransfer(@Parameter(description = "The time zone that is used to provide the response date fields, using Java TimeZone ID format", in = ParameterIn.HEADER, required = true)
                                                      @RequestHeader(value = "X-Time-Zone") String timeZone,
-                                                             @Parameter(description = "The ID of the account", required = true)
+                                                                     @Parameter(description = "The ID of the account", required = true)
                                                      @PathVariable(value = "accountId") String accountId,
-                                                             @Parameter(description = "Request body", required = true)
+                                                                     @Parameter(description = "Request body", required = true)
                                                      @Valid @RequestBody MoneyTransferRequest moneyTransferRequest) {
-        MoneyTransfer moneyTransfer = fabricClientImpl.createMoneyTransfer(timeZone, accountId, moneyTransferRequest);
-        return ResponseEntity.ok(moneyTransfer);
+        MoneyTransferResponse moneyTransferResponse = fabricClientImpl.createMoneyTransfer(timeZone, accountId, moneyTransferRequest);
+        return ResponseEntity.ok(moneyTransferResponse);
     }
 
 
@@ -82,21 +82,21 @@ public class RestApiController {
     @Operation(summary = "Retrieves the transactions of a specific cash account")
     @ApiResponse(responseCode = "200", description = "Transazioni recuperate",
             content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = AccountTransactionPayload.class))})
+                    schema = @Schema(implementation = AccountTransactionResponse.class))})
     @GetMapping("/account/{accountId}/getTransactions")
-    public ResponseEntity<AccountTransactionPayload> getTransactions(@Parameter(description = "The time zone that is used to provide the response date fields, using Java TimeZone ID format", in = ParameterIn.HEADER)
+    public ResponseEntity<AccountTransactionResponse> getTransactions(@Parameter(description = "The time zone that is used to provide the response date fields, using Java TimeZone ID format", in = ParameterIn.HEADER)
                                                       @RequestHeader(value = "X-Time-Zone", required = false) String timeZone,
-                                                                     @Parameter(description = "The ID of the account", required = true) @PathVariable(value = "accountId") String accountId,
-                                                                     @Parameter(description = "The accounting date from which transactions should be fetched", required = true) @Valid @RequestParam(value = "fromAccountingDate") Date fromAccountingDate,
-                                                                     @Parameter(description = "The accounting date to which transactions should be fetched", required = true) @Valid @RequestParam(value = "toAccountingDate") Date toAccountingDate) {
-        AccountTransactionPayload transactions = fabricClientImpl.getTransactions(timeZone, accountId, fromAccountingDate, toAccountingDate);
+                                                                      @Parameter(description = "The ID of the account", required = true) @PathVariable(value = "accountId") String accountId,
+                                                                      @Parameter(description = "The accounting date from which transactions should be fetched", required = true) @Valid @RequestParam(value = "fromAccountingDate") Date fromAccountingDate,
+                                                                      @Parameter(description = "The accounting date to which transactions should be fetched", required = true) @Valid @RequestParam(value = "toAccountingDate") Date toAccountingDate) {
+        AccountTransactionResponse transactions = fabricClientImpl.getTransactions(timeZone, accountId, fromAccountingDate, toAccountingDate);
         return ResponseEntity.ok().body(transactions);
     }
 
     @Operation(summary = "Retrieves the transactions of a specific cash account")
     @ApiResponse(responseCode = "200", description = "Transazioni recuperate",
             content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = AccountTransactionPayload.class))})
+                    schema = @Schema(implementation = AccountTransactionResponse.class))})
     @GetMapping("/account/{accountId}/getAllTransactions")
     public ResponseEntity<List<AccountTransactionEntity>> getAllTransactionsFromDb(
                                                                      @Parameter(description = "The ID of the account", required = true) @PathVariable(value = "accountId") String accountId) {

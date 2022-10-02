@@ -5,8 +5,10 @@ import it.bip.fabric.controller.RestApiController;
 import it.bip.fabric.model.dto.clientresponse.AccountBalanceClientResponse;
 import it.bip.fabric.model.dto.clientresponse.AccountTransactionClientResponse;
 import it.bip.fabric.model.dto.clientresponse.MoneyTransferClientResponse;
-import it.bip.fabric.repository.AccountTransactionRepository;
+import it.bip.fabric.model.entity.AccountTransactionEntity;
+import it.bip.fabric.service.AccountService;
 import it.bip.fabric.utils.TestJsonDocumentLoader;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
@@ -23,6 +25,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -39,8 +42,8 @@ class TestWithMockito {
     @Autowired
     RestApiController restApiController;
 
-    @MockBean
-    private AccountTransactionRepository transactionRepository;
+    @Autowired
+    AccountService accountService;
 
     @Autowired
     MockMvc mockMvc;
@@ -115,7 +118,7 @@ class TestWithMockito {
 
 
     /**
-     * Test recupero transazioni con Mockito
+     * Test recupero transazioni con Mockito e salvataggio su db
      *
      * @throws Exception
      */
@@ -145,6 +148,11 @@ class TestWithMockito {
         Assertions.assertEquals(3, Objects.requireNonNull(balance.getBody()).getList().size());
         *
         */
+
+        /* Test salvataggio su DB **/
+        List<AccountTransactionEntity> transactions = this.accountService.getTransactions();
+        Assertions.assertEquals(3, transactions.size());
+
     }
 
     /**

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class AccountTransactionPayload {
+public class AccountTransactionResponse {
     private List<AccountTransaction> list = new ArrayList<>();
 }
 

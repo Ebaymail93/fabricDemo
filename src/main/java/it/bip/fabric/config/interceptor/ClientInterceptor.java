@@ -18,6 +18,9 @@ public class ClientInterceptor implements ClientHttpRequestInterceptor {
     @Value("${external-api.authSchema}")
     private String authSchema;
 
+    @Value("${external-api.timeZone:Europe/Rome}")
+    private String timeZone;
+
     /**
      * Per ogni request verso le api Fabric valorizzo gli header Auth-Schema, Api-Key e TimeZone (se non valorizzata dall'utente).
      *
@@ -31,7 +34,7 @@ public class ClientInterceptor implements ClientHttpRequestInterceptor {
     public ClientHttpResponse intercept(HttpRequest request, byte[] body, ClientHttpRequestExecution execution) throws IOException {
         request.getHeaders().set("Auth-Schema", authSchema);
         request.getHeaders().set("Api-Key", apiKey);
-        request.getHeaders().addIfAbsent("X-Time-Zone", "Europe/Rome");
+        request.getHeaders().addIfAbsent("X-Time-Zone", timeZone);
         return execution.execute(request, body);
     }
 }

@@ -2,12 +2,10 @@ package it.bip.fabric.config;
 
 import it.bip.fabric.config.interceptor.ClientInterceptor;
 import it.bip.fabric.exceptionhandler.ClientErrorHandler;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.util.CollectionUtils;
-import org.springframework.validation.beanvalidation.MethodValidationPostProcessor;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -15,12 +13,6 @@ import java.util.List;
 
 @Configuration
 public class AppConfig {
-
-    @Value("${external-api.apiKey}")
-    private String apiKey;
-
-    @Value("${external-api.authSchema}")
-    private String authSchema;
 
     @Bean
     public RestTemplate restTemplate(ClientInterceptor interceptor) {
@@ -34,11 +26,6 @@ public class AppConfig {
         restTemplate.setInterceptors(interceptors);
         restTemplate.setErrorHandler(new ClientErrorHandler());
         return restTemplate;
-    }
-
-    @Bean
-    public MethodValidationPostProcessor methodValidationPostProcessor() {
-        return new MethodValidationPostProcessor();
     }
 }
 

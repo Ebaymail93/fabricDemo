@@ -1,5 +1,6 @@
 package it.bip.fabric.model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -12,6 +13,7 @@ import java.util.Date;
 public class MoneyTransferRequest {
     @NotNull(message = "The creditor is required.")
     private Creditor creditor;
+    @JsonFormat(pattern="yyyy-MM-dd")
     private Date executionDate;
     private String uri;
     @NotBlank(message = "Description is required.")
@@ -23,6 +25,6 @@ public class MoneyTransferRequest {
     private Boolean isUrgent;
     private Boolean isInstant;
     private String feeType;
-    private String feeAccountID;
+    private String feeAccountId;
     private TaxRelief taxRelief;
 }

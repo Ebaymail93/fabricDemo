@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
-public class MoneyTransfer {
+public class MoneyTransferResponse {
     private String moneyTransferId;
     private String status;
     private String direction;

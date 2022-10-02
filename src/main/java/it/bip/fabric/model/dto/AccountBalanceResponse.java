@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-public class AccountBalance implements Serializable{
+public class AccountBalanceResponse implements Serializable{
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date date;
     private BigDecimal balance;

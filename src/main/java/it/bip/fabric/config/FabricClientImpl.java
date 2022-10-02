@@ -55,7 +55,7 @@ public class FabricClientImpl implements FabricClient {
     }
 
     @Override
-    public AccountBalance getBalance(String timeZone, String accountId) {
+    public AccountBalanceResponse getBalance(String timeZone, String accountId) {
         HttpHeaders httpHeaders = new HttpHeaders();
         String completeUrl = url + accountId + urlBalance;
         if (StringUtils.isNotEmpty(timeZone)) {
@@ -64,12 +64,12 @@ public class FabricClientImpl implements FabricClient {
         HttpEntity<Void> requestEntity = new HttpEntity<>(httpHeaders);
         ResponseEntity<AccountBalanceClientResponse> response = restTemplate.exchange(
                 completeUrl, HttpMethod.GET, requestEntity, AccountBalanceClientResponse.class);
-        ClientModelMapper<AccountBalance> mapper = new ClientModelMapper<>();
-        return Objects.requireNonNull(mapper.entityToResource(response.getBody()));
+        ClientModelMapper<AccountBalanceResponse> mapper = new ClientModelMapper<>();
+        return Objects.requireNonNull(mapper.clientEntityToResource(response.getBody()));
     }
 
     @Override
-    public MoneyTransfer createMoneyTransfer(String timeZone, String accountId, MoneyTransferRequest moneyTransferRequest) throws HttpClientErrorException {
+    public MoneyTransferResponse createMoneyTransfer(String timeZone, String accountId, MoneyTransferRequest moneyTransferRequest) throws HttpClientErrorException {
         String completeUrl = url + accountId + urlMoneyTransfer;
         HttpHeaders httpHeaders = new HttpHeaders();
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(completeUrl);
@@ -78,14 +78,14 @@ public class FabricClientImpl implements FabricClient {
         }
         HttpEntity<MoneyTransferRequest> requestEntity = new HttpEntity<>(moneyTransferRequest, httpHeaders);
         ResponseEntity<MoneyTransferClientResponse> response = restTemplate.postForEntity(
-                builder.toUriString(), requestEntity.toString(), MoneyTransferClientResponse.class);
-        ClientModelMapper<MoneyTransfer> mapper = new ClientModelMapper<>();
-        return Objects.requireNonNull(mapper.entityToResource(response.getBody()));
+                builder.toUriString(), requestEntity, MoneyTransferClientResponse.class);
+        ClientModelMapper<MoneyTransferResponse> mapper = new ClientModelMapper<>();
+        return Objects.requireNonNull(mapper.clientEntityToResource(response.getBody()));
     }
 
     @Override
     @Transactional
-    public AccountTransactionPayload getTransactions(String timeZone, String accountId, Date fromAccountingDate, Date toAccountingDate) {
+    public AccountTransactionResponse getTransactions(String timeZone, String accountId, Date fromAccountingDate, Date toAccountingDate) {
         String completeUrl = url + accountId + urlTransactions;
         HttpHeaders httpHeaders = new HttpHeaders();
         Map<String, String> params = new HashMap<>();
@@ -102,11 +102,10 @@ public class FabricClientImpl implements FabricClient {
         ResponseEntity<AccountTransactionClientResponse> response = restTemplate.exchange(
                 builder.toUriString(), HttpMethod.GET, requestEntity, AccountTransactionClientResponse.class);
         List<AccountTransaction> list = Objects.requireNonNull(response.getBody()).getPayload().getList();
-        List<AccountTransactionEntity> entities = list.stream().map(TransactionEntityMapper::toEntity).collect(Collectors.toList());
-        entities.forEach(k->k.setAccountId(accountId));
+        List<AccountTransactionEntity> entities = list.stream().map(TransactionEntityMapper::toEntity).peek(e->e.setAccountId(accountId)).collect(Collectors.toList());
         accountService.saveTransactions(entities);
-        ClientModelMapper<AccountTransactionPayload> mapper = new ClientModelMapper<>();
-        return Objects.requireNonNull(mapper.entityToResource(response.getBody()));
+        ClientModelMapper<AccountTransactionResponse> mapper = new ClientModelMapper<>();
+        return Objects.requireNonNull(mapper.clientEntityToResource(response.getBody()));
     }
 
 }

@@ -1,6 +1,6 @@
 package it.bip.fabric.model.dto.clientresponse;
 
-import it.bip.fabric.model.dto.MoneyTransfer;
+import it.bip.fabric.model.dto.MoneyTransferResponse;
 
-public class MoneyTransferClientResponse extends ClientResponse<MoneyTransfer> {
+public class MoneyTransferClientResponse extends ClientResponse<MoneyTransferResponse> {
 }

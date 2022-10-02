@@ -4,7 +4,7 @@ import it.bip.fabric.model.dto.clientresponse.ClientResponse;
 
 public class ClientModelMapper<R> {
 
-    public R entityToResource(ClientResponse<R> entity) {
+    public R clientEntityToResource(ClientResponse<R> entity) {
         if ( entity == null ) {
             return null;
         }

@@ -13,21 +13,20 @@ external-api:
   accountId: '14537780'
   keyId: '3202'
   authSchema: 'S2S'
+  timeZone:
 spring:
   output:
     ansi:
       enabled: always
   datasource:
-    url: 'jdbc:h2:file:${user.home}/Desktop/fabricDB/fabricDB;DATABASE_TO_UPPER=false'
-    username: 'fabric'
-    password: 'demo'
-    driverClassName: 'org.h2.Driver'
+    url: jdbc:mysql://localhost:3306/fabricDB?createDatabaseIfNotExist=true
+    username: root
+    password: fabric
   jpa:
-    spring.jpa.database-platform: 'org.hibernate.dialect.H2Dialect'
-    hibernate:
-      ddlAuto: create
-  h2:
-    console.enabled: true
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+    open-in-view: false
   mvc:
     throw-exception-if-no-handler-found: true
   web:

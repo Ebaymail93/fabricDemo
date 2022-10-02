@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.method.HandlerMethod;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.List;
@@ -52,9 +55,21 @@ public class RestTemplateExpectionHandler {
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
-    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
     ResponseEntity<ErrorResponse> requestHandlingNoHandlerFound() {
         ErrorDetail errorDetail = new ErrorDetail("AP404", "La risorsa non è stata trovata");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(List.of(errorDetail)));
+    }
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public ResponseEntity<ErrorResponse> processValidationIllegalError(MethodArgumentTypeMismatchException ex,
+                                                                       HandlerMethod handlerMethod, WebRequest webRequest) {
+
+        ErrorResponse error = new ErrorResponse();
+        String message = ex.getValue() + " non è un valore valido";
+        error.getViolations().add(new Violation(ex.getName(), message));
+        return ResponseEntity.badRequest().body(error);
     }
 }
