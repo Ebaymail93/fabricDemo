@@ -95,7 +95,6 @@ class TestWithWiremockServer {
      */
     @Test
     void testMoneyTransferWrongParams() throws Exception {
-        this.wireMockStubs.generateStubForMoneyTransfer();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("X-Time-Zone","Europe/Rome");
         String jsonData = TestJsonDocumentLoader.loadTestJson("../../../__files/wrongCreateMoneyTransferClientRequest.json", TestWithMockito.class);
