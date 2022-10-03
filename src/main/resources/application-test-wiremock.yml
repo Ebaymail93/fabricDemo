@@ -3,7 +3,7 @@ external-api:
     baseUrl: 'http://localhost:8085/api/gbs/banking/v4.0/accounts/'
 spring:
   datasource:
-    url: jdbc:h2:mem:fabricDB
+    url: jdbc:h2:mem:fabrickDB
     username: fabrick
     password: fabrick
     driverClassName: org.h2.Driver

@@ -19,7 +19,7 @@ spring:
     ansi:
       enabled: always
   datasource:
-    url: jdbc:mysql://localhost:3306/fabricDB?createDatabaseIfNotExist=true
+    url: jdbc:mysql://localhost:3306/fabrickDB?createDatabaseIfNotExist=true
     username: root
     password: fabrick
   jpa:
