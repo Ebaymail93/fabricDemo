@@ -50,7 +50,7 @@ class TestWithMockito {
 
 
     /**
-     * Test recupero saldo con Mockito
+     * Test Mockito balance recovery
      *
      * @throws Exception
      */
@@ -81,7 +81,7 @@ class TestWithMockito {
     }
 
     /**
-     * Test trasferimento denaro con Mockito
+     * Test Mockito money transfer
      *
      * @throws Exception
      */
@@ -118,7 +118,7 @@ class TestWithMockito {
 
 
     /**
-     * Test recupero transazioni con Mockito e salvataggio su db
+     * Transaction recovery and db persist test with Wiremock
      *
      * @throws Exception
      */
@@ -156,7 +156,7 @@ class TestWithMockito {
     }
 
     /**
-     * Test trasferimento denaro con Mockito. Case con request body non valida, campo "description" blank
+     * Mockito money transfer test with invalid request body. ( Blank "description" field)
      * @throws Exception
      */
     @Test

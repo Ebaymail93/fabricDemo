@@ -51,7 +51,7 @@ class TestWithWiremockServer {
     MockMvc mockMvc;
 
     /**
-     *  Test recupero saldo con Wiremock
+     *  Test Wiremock balance recovery
      *
      */
     @Test
@@ -62,7 +62,7 @@ class TestWithWiremockServer {
     }
 
     /**
-     *  Test recupero transazioni con Wiremock e salvataggio su db
+     *  Transaction recovery and db persist test with Wiremock
      *
      */
     @Test
@@ -75,7 +75,7 @@ class TestWithWiremockServer {
     }
 
     /**
-     *  Test trasferimento denaro con Wiremock
+     *  Test Wiremock money transfer
      *
      */
     @Test
@@ -90,7 +90,7 @@ class TestWithWiremockServer {
 
 
     /**
-     *  Test trasferimento denaro con Wiremock; Case body request non valida.
+     *  Test Wiremock money transfer with invalid request body. ( Blank "description" field)
      *
      */
     @Test
