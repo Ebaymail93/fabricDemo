@@ -32,7 +32,7 @@ import java.util.List;
         @ApiResponse(responseCode = "403", description = "Non possiedi i permessi necessari alla richiesta",
                 content = {@Content(mediaType = "application/json",
                         schema = @Schema(implementation = ErrorResponse.class))}),
-        @ApiResponse(responseCode = "500", description = "Errore tecnico. La condizione BP049 non e' prevista per il conto",
+        @ApiResponse(responseCode = "500", description = "Errore di sistema",
                 content = {@Content(mediaType = "application/json",
                         schema = @Schema(implementation = ErrorResponse.class))}),
         @ApiResponse(responseCode = "504", description = "Timeout durante la ricezione di una risposta dal server",
@@ -48,8 +48,8 @@ public class RestApiController {
     AccountService accountService;
 
     
-    @Operation(summary = "Retrieves the balance of a specific cash account")
-    @ApiResponse(responseCode = "200", description = "Transazioni recuperate",
+    @Operation(summary = "Retrieves the balance of a specific account")
+    @ApiResponse(responseCode = "200", description = "Operation executed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = AccountBalanceResponse.class))})
     @GetMapping("/account/{accountId}/getBalance")
@@ -63,7 +63,7 @@ public class RestApiController {
 
 
     @Operation(summary = "Creates a new money transfer")
-    @ApiResponse(responseCode = "200", description = "Operazione eseguita",
+    @ApiResponse(responseCode = "200", description = "Operation executed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = MoneyTransferResponse.class))})
     @PostMapping(value = "/account/{accountId}/payments/money-transfers", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -79,7 +79,7 @@ public class RestApiController {
 
 
     
-    @Operation(summary = "Retrieves the transactions of a specific cash account")
+    @Operation(summary = "Retrieves transactions of a specific account")
     @ApiResponse(responseCode = "200", description = "Transazioni recuperate",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = AccountTransactionResponse.class))})
@@ -93,8 +93,8 @@ public class RestApiController {
         return ResponseEntity.ok().body(transactions);
     }
 
-    @Operation(summary = "Retrieves the transactions of a specific cash account")
-    @ApiResponse(responseCode = "200", description = "Transazioni recuperate",
+    @Operation(summary = "Retrieves transactions of a specific account from the database")
+    @ApiResponse(responseCode = "200", description = "Operation executed",
             content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = AccountTransactionResponse.class))})
     @GetMapping("/account/{accountId}/getAllTransactions")

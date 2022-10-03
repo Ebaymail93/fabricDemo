@@ -29,7 +29,7 @@ public class RestTemplateExpectionHandler {
 
     @ExceptionHandler(value = ClientException.class)
     ResponseEntity<ErrorResponse> handleMyRestTemplateException(ClientException ex) {
-        log.error("Si è verificato un errore durante la chiamata all'API: {}", ex.getErrors());
+        log.error("An error occurred while calling the API: {}", ex.getErrors());
         return new ResponseEntity<>(new ErrorResponse(ex.getErrors()), ex.getStatusCode());
     }
 
@@ -41,7 +41,7 @@ public class RestTemplateExpectionHandler {
             error.getViolations().add(
                     new Violation(fieldError.getField(), fieldError.getDefaultMessage()));
         }
-        log.error("Sono stati violati i vincoli presenti sui parametri: {}", error.getViolations());
+        log.error("Constraints on parameters have been violated: {}", error.getViolations());
         return ResponseEntity.badRequest().body(error);
     }
 
@@ -57,7 +57,7 @@ public class RestTemplateExpectionHandler {
     @ExceptionHandler(NoHandlerFoundException.class)
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     ResponseEntity<ErrorResponse> requestHandlingNoHandlerFound() {
-        ErrorDetail errorDetail = new ErrorDetail("AP404", "La risorsa non è stata trovata");
+        ErrorDetail errorDetail = new ErrorDetail("AP404", "The resource was not found");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(List.of(errorDetail)));
     }
 
@@ -68,7 +68,7 @@ public class RestTemplateExpectionHandler {
                                                                        HandlerMethod handlerMethod, WebRequest webRequest) {
 
         ErrorResponse error = new ErrorResponse();
-        String message = ex.getValue() + " non è un valore valido";
+        String message = ex.getValue() + " it is not a valid value";
         error.getViolations().add(new Violation(ex.getName(), message));
         return ResponseEntity.badRequest().body(error);
     }
