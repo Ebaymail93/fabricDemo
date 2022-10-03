@@ -3,9 +3,9 @@ external-api:
     baseUrl: 'https://sandbox.platfr.io/api/gbs/banking/v4.0/accounts/'
 spring:
   datasource:
-    url: jdbc:h2:mem:fabricDB
-    username: fabric
-    password: fabric
+    url: jdbc:h2:mem:fabrickDB
+    username: fabrick
+    password: fabrick
     driverClassName: org.h2.Driver
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect

@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>it.bip</groupId>
-	<artifactId>fabric</artifactId>
+	<artifactId>fabrick</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>FabricDemo</name>
-	<description>Demo project for Fabric</description>
+	<name>FabricKDemo</name>
+	<description>Demo project for Fabrick</description>
 	<properties>
 		<java.version>11</java.version>
 		<org.mapstruct.version>1.5.2.Final</org.mapstruct.version>

@@ -21,7 +21,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/fabricDB?createDatabaseIfNotExist=true
     username: root
-    password: fabric
+    password: fabrick
   jpa:
     hibernate.ddl-auto: update
     generate-ddl: true

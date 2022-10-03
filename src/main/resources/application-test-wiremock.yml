@@ -4,8 +4,8 @@ external-api:
 spring:
   datasource:
     url: jdbc:h2:mem:fabricDB
-    username: fabric
-    password: fabric
+    username: fabrick
+    password: fabrick
     driverClassName: org.h2.Driver
   jpa:
     spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
